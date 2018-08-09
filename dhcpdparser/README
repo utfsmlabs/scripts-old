@@ -1,0 +1,5 @@
+1) Copiar el DHCP (dhcpd.conf) a ésta carpeta.
+2) Ejecutar el programa parse (./parse).
+3) Revisar si todos los PCs están en la lista (ver archivo dhcp.parse).
+4) Copiar el archivo macs a donde está el script a prender.sh
+5) Fin

@@ -1,0 +1,27 @@
+#!/bin/env python
+
+from wakeonlan import wol
+import sys
+from os.path import expanduser
+
+
+HOME = expanduser("~")
+DICK_PATH=HOME+"/scripts/Core-scripts/DICK/Dickts/"
+
+if len(sys.argv) <2:
+	print "Ingresar nombre del PC o 'todos' para prenderlos todos."
+	exit()
+	
+enviado = False
+with open(DICK_PATH  +'pc2mac', 'r') as lines:
+	for line in lines:
+		pc, mac = line.strip('\n').split("%")
+		if sys.argv[1]==pc or sys.argv[1]=="todos":
+			print "Mandando paquete magico a {0}, MAC: {1}".format(pc,mac)
+			#wol.send_magic_packet(mac,ip_address="10.6.40.255", port=7)
+			wol.send_magic_packet(mac, ip_address="10.6.40.255")
+			enviado = True
+
+	if not enviado:
+		print "PC", "'"+ sys.argv[1] +"'", "no encontrado :("
+

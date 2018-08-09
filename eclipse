@@ -1,0 +1,4 @@
+#!/bin/sh
+export ECLIPSE_HOME="/usr/share/eclipse"
+ 
+$ECLIPSE_HOME/eclipse $*

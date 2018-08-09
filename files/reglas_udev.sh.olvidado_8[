@@ -1,0 +1,32 @@
+#! /bin/bash
+
+archivo_reglas="/etc/udev/rules.d/69-vbox-discos-maipussy.rules"
+archivo_discos="/etc/VirtualBox/discos_vbox"
+echo "#Archivo de reglas creado para mantener sanos los permisos de las maquinas virtuales" > $archivo_reglas
+echo "#Esta cosa se crea automaticamente =)" >> $archivo_reglas
+echo ""
+#if [ -f $archivo_discos ]; then
+
+	for disco in $(ls -l /dev/storage | grep -v "root ->" | grep -v "swap ->" | awk '{print $9 $11}')
+	do
+		nombre=$(echo $disco | sed 's/[../].*$//')
+		disco=$(echo $disco | sed 's/^.*[../]//')
+		echo "$nombre::$disco agregado a udev"
+		#echo "$nombre $disco"
+		#VAR1=$(ls -la /dev/storage/$disco | sed "s/.*..\///")
+		#echo $VAR1
+		#if ! [ -z $VAR1 ]; then
+			echo "" >> $archivo_reglas
+			echo "#$nombre" >> $archivo_reglas
+			echo "KERNEL==\"$disco\",GROUP=\"vboxusers\",MODE=\"0660\"" >> $archivo_reglas
+		#else
+			#echo ""
+		#fi
+	done
+	echo ""
+	echo "Se supone que se creo el archivo con las reglas =), espero no haberme mandado un cagaso"
+#else
+
+#	echo "Verificar que existe el archivo \"discos_vbox\" con los nombres de los discos de VirtualBox"
+#fi
+chmod 770 $0

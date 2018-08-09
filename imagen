@@ -1,0 +1,25 @@
+#!/bin/bash
+if [ $# -lt 1 ]; then
+        echo "USO:"
+        echo "$0 Tamaño del Disco"
+        exit 0
+fi
+if [ $1 ]; then
+  wget  http://eloise/mnt/storage/labs/img/labs-fedora/sfdisks/${1}gb.sfdisk
+  sfdisk /dev/sda -f < ${1}gb.sfdisk
+  mkfs.ext4 -L BOOT /dev/sda1
+  pvcreate /dev/sda2 -ff
+  vgcreate storage /dev/sda2
+  lvcreate -L 50G -n root storage
+  lvcreate -L 4G -n swap storage
+  vgchange -ay
+  mkfs.ext4 -L BOOT /dev/sda1
+  mkfs.ext4 -L ROOT /dev/storage/root
+  mkswap -L SWAP /dev/storage/swap
+  mount /dev/storage/root /mnt
+  mkdir /mnt/boot
+  mount /dev/sda1 /mnt/boot/
+  wget http://eloise.inf.santiago.usm.cl/mnt/storage/labs/img/labs-fedora/imagen.tbz2 -O -| tar xjp -C /mnt/
+  mount -t proc proc /mnt/proc
+  mount -t sysfs sys /mnt/sys
+  mount -o bind /dev/ /mnt/dev

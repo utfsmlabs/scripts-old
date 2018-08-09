@@ -1,0 +1,9 @@
+[libvirt Management Admin]
+# For allowing access to specific user only:
+#Identity=unix-user:bozz
+# For allowing access to a group (like this guide):
+Identity=unix-group:users
+Action=org.libvirt.unix.manage
+ResultAny=yes
+ResultInactive=yes
+ResultActive=yes

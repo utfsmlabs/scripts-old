@@ -1,0 +1,30 @@
+#!/bin/env python
+
+import re
+
+dhcp_parse = ur'\s+host\s+(lds-pc\d{2})\s+{\s+((#?\s+hardware ethernet [0-9a-f:]+;\s+?)+)'
+ethernet_parse = ur'(#?)\s*hardware ethernet ([a-f0-9:]+);'
+regex_options = re.IGNORECASE
+
+with open('dhcpd.conf', 'r') as dhcpd:
+	matches = re.findall(dhcp_parse, dhcpd.read(), regex_options)
+	#print matches
+	ethermatches = []
+	for match in matches:
+		#print match
+		bad_filter = re.findall(ethernet_parse, match[1], regex_options)
+		for entries in bad_filter:
+			if not entries[0]:
+				ethermatches.append((match[0], entries[1]))
+				break
+		#ethermatches.append((match[0], re.findall(ethernet_parse, match[1], regex_options)[0]))
+	#print ethermatches
+	with open('dhcpd.parse', 'w') as dhcpo:
+	        for match in ethermatches:
+			dhcpo.write('{0}: {1}\n'.format(match[0], match[1]))
+	with open('macs', 'w') as dhcpo:
+		for match in ethermatches:
+			dhcpo.write('{0}\n'.format(match[1].upper()))
+		
+    
+    

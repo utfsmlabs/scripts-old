@@ -1,0 +1,1 @@
+/home/inf/scripts/Core-scripts/DICK/dick.sh

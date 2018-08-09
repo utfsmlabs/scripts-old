@@ -1,0 +1,11 @@
+#!/bin/env python
+
+from wakeonlan import wol
+
+with open('macs', 'r') as macfile:
+	macs = [x.strip('\n') for x in macfile.readlines()]
+	for mac in macs:
+		print "Mandando paquete magico a {0}".format(mac)
+		wol.send_magic_packet(mac, port=7)
+		wol.send_magic_packet(mac)
+

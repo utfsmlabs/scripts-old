@@ -1,0 +1,1 @@
+Core-scripts/is_prendido.sh
