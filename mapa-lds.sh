@@ -68,7 +68,7 @@ copiar_estados(){
 			id=$(echo $pc | sed "s/^tmp\/estado_lds-pc//")
 			#var[$(echo $pc | sed "s/^tmp\/estado_lds-pc//")]=$(cat $pc)
 			var[$id]=$(cat $pc)
-			echo $pc
+			#echo $pc
 			id=$(echo $pc | sed "s/^tmp\/estado_lds-pc//")
 			#echo ${var[$id]}
 			usua[$id]=$(cat tmp/usuarios_lds-pc$id 2>/dev/null)
@@ -78,7 +78,7 @@ copiar_estados(){
 	done
 	for indice in $(seq 49)
     	do
-        	echo $indice
+        	#echo $indice
         	ori[$indice]=${var[$indice]}
     	done
 	
@@ -92,6 +92,7 @@ reset_pos(){
     var[40]=$(echo ${var[40]} | sed "s/e.[0-9]*[;][0-9]*[;]/e[7;1;/")
 
 }
+
 
 
 info "lds-pc10" 10
@@ -127,6 +128,9 @@ done
 #	fi
 #done
 
+#make_primos_great_again
+echo "Make Primos Great Again"
+#sleep 0.1
 clear
 
 #JSON
@@ -163,7 +167,11 @@ echo ""
 echo ""
 echo -e "\e[0;1;31mX\e[0m APAGADO    \e[0;0;32mO\e[0m PRENDIDO    \e[43;1;30mO\e[0m PRENDIDO con algun problema xD"
 echo -e "\e[43;1;31m?\e[0m No se pudo determinar el estado :("
-echo -e "q: salir    R: recargar todo    p: recargar info pc"
+echo ""
+echo -e "Si se ve 'raro', recargar todo (R)"
+echo ""
+echo -e "R: recargar todo    p: recargar info pc"
+echo -e "l: login SSH    q: salir"
 echo ""
 
     stty raw; stty -echo
@@ -233,6 +241,7 @@ echo ""
 		info "lds-pc10" 10
 		copiar_estados
 		reset_pos
+		#make_primos_great_again
                 ;;
         "p")    #echo "RELOAD PC"
                 let pos=$i*10+$j
@@ -241,7 +250,12 @@ echo ""
 		info $pc $id
                 copiar_estados
                 var[$pos]=$(echo ${var[$pos]} | sed "s/e.[0-9]*[;][0-9]*[;]/e[7;1;/")
+		#make_primos_great_again
                 ;;
+	"l")	echo "Ingresando por SSH"
+		id=$pos
+		ssh root@lds-pc$id
+		;;
         "q")    rm tmp/usuarios_lds* 2>/dev/null
 		rm tmp/estado_lds* 2>/dev/null
 		exit;;
